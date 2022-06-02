@@ -49,18 +49,31 @@ for k in range(iter_max):
 
         for i in range(n):
 
-            # This is just a VERY WEIRD and NOT OKAY way of trying things out to make the algorithm converge!!!
-            # In this case, we were testing always taking the xi that minimizes the function (not right of course)
-            x_min = 99
-            tmp = 9e19
-            for j in range(n):
-                s1 = (np.matmul(x[k, :], x[k, :].T)**2).item() * q[i]
-                s2 = 0.5 * rho * (np.abs(x[k, j].item() - xg[k].item() + u[k, i].item())) ** 2
+            # This is a VERY STUPID way of producing the minimizing argument xi for the function
+            # We did not fully figure this formula out and were trying around with things
+            upper_bound = 9e99
+            x_i_min = x[k, i]
+            for tv in np.arange(-100, 100, 0.01):
+                s1 = tv**2 * q[i]
+                s2 = 0.5 * rho * (np.abs(tv - xg[k].item() + u[k, i].item())) ** 2
                 s = s1 + s2
+                if s < upper_bound:
+                    upper_bound = s
+                    x_i_min = tv
+            x_min = x_i_min
 
-                if s < tmp:
-                    tmp = s
-                    x_min = x[k, j].item()
+            # # This is just a VERY WEIRD and NOT OKAY way of trying things out to make the algorithm converge!!!
+            # # In this case, we were testing always taking the xi that minimizes the function (not right of course)
+            # x_min = 99
+            # tmp = 9e19
+            # for j in range(n):
+            #     s1 = (np.matmul(x[k, :], x[k, :].T)**2).item() * q[i]
+            #     s2 = 0.5 * rho * (np.abs(x[k, j].item() - xg[k].item() + u[k, i].item())) ** 2
+            #     s = s1 + s2
+            #
+            #     if s < tmp:
+            #         tmp = s
+            #         x_min = x[k, j].item()
 
             # FIXME: Argmin over xi (we want to identify the xi that minimizes the function)
             x[k + 1, i] = x_min
