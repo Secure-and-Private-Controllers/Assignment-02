@@ -35,10 +35,6 @@ xg = np.hstack([xgenc, xg])
 
 u = np.zeros((iter_max+1, n))
 
-"Encryption"
-# public_key, private_key = paillier.generate_paillier_keypair()
-# x = [public_key.encrypt(x) for x in x]
-# xg = [public_key.encrypt(x) for x in xg]
 
 "ADMM"
 # for k in range(iter_max):
@@ -52,7 +48,10 @@ u = np.zeros((iter_max+1, n))
 #         u[k+1, i] = u[k, i] + x[k+1, i] - xg[k+1]
 
 "Decryption"
-#x_decr = 
+x_decr = [private_key.decrypt(x) for x in xenc]
+#for x in x
+xg_decr = [private_key.decrypt(x) for x in xgenc]
+#xg_decr = private_key.decrypt(xg[17])
 
 "How to record time?"
 
