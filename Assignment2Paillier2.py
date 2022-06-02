@@ -31,7 +31,7 @@ rho = 1
 xg = np.zeros(iter_max)
 xg0 = 1/n * np.sum(x0)
 xgenc = [public_key.encrypt(xg0)]
-#xg = xg.insert(xgenc, 0)
+xg = np.hstack([xgenc, xg])
 
 u = np.zeros((iter_max+1, n))
 
