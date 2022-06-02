@@ -26,6 +26,7 @@ xg = np.zeros(iter_max+1)
 xg[0] = 1/n * np.sum(x[0])
 u = np.zeros((iter_max+1, n))
 
+"ADMM"
 for k in range(iter_max):
     
     for i in range(3):
