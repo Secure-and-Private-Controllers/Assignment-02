@@ -11,7 +11,6 @@ Theo Rieken
 
 import numpy as np
 import matplotlib.pyplot as plt
-import random
 
 "Parameters"
 n = 3
@@ -23,19 +22,18 @@ q = [1, 1, 1]
 
 rho = 1
 
+xg = np.zeros(iter_max+1)
+u = np.zeros((iter_max+1, n))
+
 for k in range(iter_max+1):
     
     for i in range(3):
-        x(k+1, i) = np.argmin()
-    end
+        x[k+1, i] = np.argmin(x[i].transpose()*q[i]*x[i] + rho/2 * (np.absolute(x[i] - xg[k] + u[k, i]))^2) #Not sure how to do this
         
     xg = 1/n * np.sum(x, axis=1)
     
     for i in range(3):
-        u(k+1, i) = u(k, i) + x(k+1, i) - xg(k+1)
-    end
-    
-end
+        u[k+1, i] = u[k, i] + x[k+1, i] - xg[k+1]
 
 "How to record time?"
 
