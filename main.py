@@ -111,9 +111,6 @@ class TrustedParty:
     x_bar_store = None
     duration_store = None
 
-    # A counter so that figures are not overwritten
-    figure_counter = None
-
     # The start time of the consensus process
     start_time = None
 
@@ -127,9 +124,6 @@ class TrustedParty:
         self.state_store = []
         self.x_bar_store = []
         self.duration_store = []
-
-        # Initiate the figure counter
-        self.figure_counter = 1
 
         # Generate public and private key (or leave none if desired)
         key_tuple = paillier.generate_paillier_keypair() if encrypted else (None, None)
@@ -191,11 +185,11 @@ class TrustedParty:
             raise ValueError("Agent not known to trusted party")
         return x_bar
 
-    def finish_experiment(self, show_figures: bool = True, image_path: str = "experiment_outcome"):
+    def finish_experiment(self, show_figures: bool = True, image_path: str = "experiment_outcome", figure_counter: int = 1):
 
         # Obtain the full duration in seconds
         duration = time.time() - self.start_time
-        print("Experiment {:d} took {:.2f} {:s}".format(self.figure_counter, ((duration * 1000) if duration < 1 else duration), ("ms" if duration < 1 else "s")))
+        print("Experiment {:d} took {:.2f} {:s}".format(figure_counter, ((duration * 1000) if duration < 1 else duration), ("ms" if duration < 1 else "s")))
 
         # Print the final agent state values
         for i, agent in enumerate(self.agents):
@@ -212,7 +206,7 @@ class TrustedParty:
         plt.ylabel("Duration")
         if show_figures:
             plt.show()
-        fig.savefig(os.path.join(os.getcwd(), "figures", "{:s}_{:s}_{:d}.png".format(image_path, "duration", self.figure_counter)))
+        fig.savefig(os.path.join(os.getcwd(), "figures", "{:s}_{:s}_{:d}.png".format(image_path, "duration", figure_counter)))
 
         # Plot the iterations duration
         fig = plt.figure(figsize=(15, 8))
@@ -227,16 +221,21 @@ class TrustedParty:
         plt.ylabel("x value")
         if show_figures:
             plt.show()
-        fig.savefig(os.path.join(os.getcwd(), "figures", "{:s}_{:s}_{:d}.png".format(image_path, "consensus", self.figure_counter)))
-
-        # Increment the figure counter
-        self.figure_counter += 1
+        fig.savefig(os.path.join(os.getcwd(), "figures", "{:s}_{:s}_{:d}.png".format(image_path, "consensus", figure_counter)))
 
 
 class Experiment:
 
     # A trusted party that mediates between the agents
     trusted_party = None
+
+    # The number of experiment that has been run
+    experiment_number = None
+
+    def __init__(self):
+
+        # Initialize the number of experiments
+        self.experiment_number = 1
 
     def run_experiment(self, initial_values, max_iters: int = 20, encrypted: bool = False):
 
@@ -256,7 +255,10 @@ class Experiment:
             self.trusted_party.step()
 
         # Call the finish method (for plotting and measurements)
-        self.trusted_party.finish_experiment()
+        self.trusted_party.finish_experiment(figure_counter=self.experiment_number)
+
+        # Increase the number of experiments
+        self.experiment_number += 1
 
 
 # Create an experiment
