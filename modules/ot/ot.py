@@ -1,10 +1,10 @@
 import rsa
 from hashlib import sha256
 from itertools import combinations
-from json_stuff import *
+from .json_stuff import *
 from random import SystemRandom
-from next_prime import next_prime
-from mulinv import mulinv
+from .next_prime import next_prime
+from .mulinv import mulinv
 
 RSA_bits = 512
 
