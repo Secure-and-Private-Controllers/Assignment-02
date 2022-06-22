@@ -70,18 +70,21 @@ class Agent:
         self.x_bar = x_bar if self.private_key is None else self.private_key.decrypt(x_bar)
 
         # Construct a symbolic x
-        x = Symbol('x', real=True)
+        # x = Symbol('x', real=True)
 
         # The problem to solve (encoded directly in agent object)
-        problem_to_solve = x**2 * self.q
+        # problem_to_solve = x**2 * self.q
 
         # Construct the total problem to solve and solve it
-        f = problem_to_solve + (rho/2) * (abs(x - self.x_bar + self.u))**2
-        derivative = f.diff(x)
-        x_next = solve(derivative, x)
+        # f = problem_to_solve + (rho/2) * (abs(x - self.x_bar + self.u))**2
+        # derivative = f.diff(x)
+        # x_next = solve(derivative, x)
+
+        # Laura's hint (much easier than computing everytime)
+        x_next = rho / (self.q + rho) * (self.x_bar - self.u)
 
         # Simulate different speeds and delays in the bus-system (usually parallel processing)
-        if random.random() > 0.5:
+        if random.random() > 0.2:
 
             # Compute the next value of x
             if type(x_next) is list:
@@ -271,4 +274,4 @@ agents_setup = [{'x': 1, 'q': 1}, {'x': 0.3, 'q': 1}, {'x': 0.1, 'q': 1}]
 experiment.run_experiment(agents_setup, max_iters=18, encrypted=False)
 
 # Run the encrypted experiment
-experiment.run_experiment(agents_setup, max_iters=18, encrypted=True)
+# experiment.run_experiment(agents_setup, max_iters=18, encrypted=True)
