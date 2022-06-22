@@ -1,3 +1,0 @@
-[submodule "modules/ot-modules"]
-	path = modules/ot-modules
-	url = git@github.com:wbernoudy/ot.py.git
