@@ -1,3 +1,11 @@
+Secure & Private Control
+Date: 30-06-2022
+
+TU Delft | Assignment 2
+
+Tjalling Idsardi
+Theo Rieken
+
 # Encrypted Consensus Problems
 
 ### Secure and Private Control - Assignment II
